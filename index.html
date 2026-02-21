@@ -1,0 +1,1908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KAMARAJ COLLEGE - National Level Symposium 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #00f5ff;
+    --secondary: #ff6b35;
+    --accent: #7c3aed;
+    --gold: #ffd700;
+    --dark: #020510;
+    --darker: #010308;
+    --surface: rgba(0,245,255,0.05);
+    --border: rgba(0,245,255,0.2);
+    --text: #e0f7fa;
+    --muted: rgba(224,247,250,0.6);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  #particleCanvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page { display: none; min-height: 100vh; position: relative; z-index: 1; }
+  .page.active { display: block; }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 40px;
+    background: rgba(2,5,16,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 2px;
+    cursor: pointer;
+  }
+  .nav-links { display: flex; gap: 12px; }
+  .nav-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 6px 18px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.25s;
+  }
+  .nav-btn:hover, .nav-btn.active-link {
+    border-color: var(--primary);
+    color: var(--primary);
+    box-shadow: 0 0 12px rgba(0,245,255,0.2);
+  }
+
+  #home {
+    padding-top: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero {
+    width: 100%;
+    text-align: center;
+    padding: 60px 20px 40px;
+    position: relative;
+  }
+
+  .college-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, rgba(124,58,237,0.3), rgba(0,245,255,0.1));
+    border: 1px solid rgba(124,58,237,0.5);
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    color: #a78bfa;
+    margin-bottom: 24px;
+    animation: pulse-border 2s infinite;
+  }
+  @keyframes pulse-border {
+    0%,100% { box-shadow: 0 0 0 0 rgba(124,58,237,0.4); }
+    50% { box-shadow: 0 0 0 8px rgba(124,58,237,0); }
+  }
+
+  .hero-college {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 3px;
+    line-height: 1.4;
+    margin-bottom: 4px;
+    text-shadow: 0 0 30px rgba(0,245,255,0.5);
+  }
+  .hero-subtitle-college {
+    font-size: 0.8rem;
+    color: var(--muted);
+    letter-spacing: 2px;
+    margin-bottom: 28px;
+  }
+
+  .presents-text {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--gold);
+    letter-spacing: 6px;
+    margin-bottom: 12px;
+    opacity: 0.9;
+  }
+
+  .dept-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, rgba(255,107,53,0.2), rgba(255,215,0,0.1));
+    border: 1px solid rgba(255,107,53,0.4);
+    border-radius: 6px;
+    padding: 6px 20px;
+    font-size:larger;
+    letter-spacing: 2px;
+    color: var(--secondary);
+    margin-bottom: 30px;
+  }
+
+  .hero-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #fff 0%, var(--primary) 40%, var(--gold) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+  }
+
+  .hero-tagline {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(0.7rem, 1.5vw, 0.95rem);
+    color: var(--muted);
+    letter-spacing: 8px;
+    margin-bottom: 8px;
+  }
+
+  .event-date-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,107,53,0.1));
+    border: 1px solid rgba(255,215,0,0.4);
+    border-radius: 50px;
+    padding: 10px 28px;
+    font-family: 'Orbitron', monospace;
+    font-size: 1rem;
+    color: var(--gold);
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin: 20px 0 30px;
+    animation: glow-gold 2s infinite alternate;
+  }
+  @keyframes glow-gold {
+    from { box-shadow: 0 0 10px rgba(255,215,0,0.2); }
+    to { box-shadow: 0 0 30px rgba(255,215,0,0.5); }
+  }
+  .date-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); animation: blink 1s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+  .countdown-wrapper {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto 50px;
+    padding: 0 20px;
+  }
+  .countdown-label {
+    text-align: center;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 5px;
+    margin-bottom: 16px;
+  }
+  .countdown-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .countdown-item {
+    background: rgba(0,245,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 10px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+  .countdown-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,245,255,0.08) 0%, transparent 100%);
+    pointer-events: none;
+  }
+  .countdown-item:hover {
+    border-color: var(--primary);
+    box-shadow: 0 0 20px rgba(0,245,255,0.15);
+  }
+  .countdown-num {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 900;
+    color: var(--primary);
+    text-shadow: 0 0 20px rgba(0,245,255,0.6);
+    display: block;
+    line-height: 1;
+  }
+  .countdown-unit {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 3px;
+    margin-top: 6px;
+    display: block;
+  }
+
+  .section-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    max-width: 900px;
+    width: 100%;
+    padding: 0 20px 40px;
+    margin: 0 auto;
+  }
+
+  .category-card {
+    position: relative;
+    border-radius: 20px;
+    padding: 48px 36px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 280px;
+    border: 1px solid transparent;
+  }
+
+  .category-card.technical {
+    background: linear-gradient(135deg, rgba(0,245,255,0.08) 0%, rgba(124,58,237,0.12) 100%);
+    border-color: rgba(0,245,255,0.25);
+  }
+  .category-card.non-technical {
+    background: linear-gradient(135deg, rgba(255,107,53,0.1) 0%, rgba(255,215,0,0.08) 100%);
+    border-color: rgba(255,107,53,0.3);
+  }
+
+  .category-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.4s;
+    border-radius: 20px;
+  }
+  .category-card.technical::before {
+    background: radial-gradient(ellipse at 30% 30%, rgba(0,245,255,0.15) 0%, transparent 70%);
+  }
+  .category-card.non-technical::before {
+    background: radial-gradient(ellipse at 70% 30%, rgba(255,107,53,0.2) 0%, transparent 70%);
+  }
+
+  .category-card:hover { transform: translateY(-8px) scale(1.02); }
+  .category-card:hover::before { opacity: 1; }
+  .category-card.technical:hover { border-color: var(--primary); box-shadow: 0 20px 60px rgba(0,245,255,0.2), 0 0 0 1px rgba(0,245,255,0.3); }
+  .category-card.non-technical:hover { border-color: var(--secondary); box-shadow: 0 20px 60px rgba(255,107,53,0.2), 0 0 0 1px rgba(255,107,53,0.3); }
+
+  .card-icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+    display: block;
+    filter: drop-shadow(0 0 10px currentColor);
+  }
+
+  .card-type-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 4px;
+    padding: 4px 12px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+  }
+  .technical .card-type-tag { background: rgba(0,245,255,0.15); color: var(--primary); border: 1px solid rgba(0,245,255,0.3); }
+  .non-technical .card-type-tag { background: rgba(255,107,53,0.15); color: var(--secondary); border: 1px solid rgba(255,107,53,0.3); }
+
+  .card-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.6rem;
+    font-weight: 900;
+    margin-bottom: 12px;
+    line-height: 1.1;
+  }
+  .technical .card-title { color: var(--primary); }
+  .non-technical .card-title { color: var(--secondary); }
+
+  .card-count {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 24px;
+    letter-spacing: 1px;
+  }
+
+  .card-events-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 28px;
+  }
+  .event-pill {
+    font-size: 0.7rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    font-weight: 600;
+  }
+  .technical .event-pill { background: rgba(0,245,255,0.1); color: rgba(0,245,255,0.8); border: 1px solid rgba(0,245,255,0.2); }
+  .non-technical .event-pill { background: rgba(255,107,53,0.1); color: rgba(255,107,53,0.8); border: 1px solid rgba(255,107,53,0.2); }
+
+  .card-cta {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .technical .card-cta { background: linear-gradient(135deg, var(--primary), #0099aa); color: var(--dark); }
+  .non-technical .card-cta { background: linear-gradient(135deg, var(--secondary), #cc5020); color: white; }
+  .card-cta:hover { transform: scale(1.05); }
+
+  .card-bg-number {
+    position: absolute;
+    bottom: -20px;
+    right: -10px;
+    font-family: 'Orbitron', monospace;
+    font-size: 8rem;
+    font-weight: 900;
+    opacity: 0.04;
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .info-strip {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto 20px;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .info-item {
+    background: rgba(255,215,0,0.05);
+    border: 1px solid rgba(255,215,0,0.2);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .info-icon { font-size: 1.4rem; }
+  .info-text { font-size: 0.8rem; color: var(--gold); letter-spacing: 1px; font-weight: 600; }
+
+  .reg-bar {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto 60px;
+    padding: 0 20px;
+  }
+  .reg-bar-inner {
+    background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(0,245,255,0.1));
+    border: 1px solid rgba(124,58,237,0.4);
+    border-radius: 12px;
+    padding: 18px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .reg-info { font-size: 0.9rem; color: var(--muted); letter-spacing: 1px; }
+  .reg-info strong { color: var(--primary); }
+  .reg-btn {
+    background: linear-gradient(135deg, var(--accent), #5b21b6);
+    border: none;
+    color: white;
+    padding: 10px 28px;
+    border-radius: 8px;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .reg-btn:hover { box-shadow: 0 0 20px rgba(124,58,237,0.5); transform: translateY(-2px); }
+
+  .coordinators {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto 60px;
+    padding: 0 20px;
+  }
+  .coord-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 4px;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .coord-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .coord-section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+  .coord-section-title { font-size: 0.65rem; letter-spacing: 3px; color: var(--primary); margin-bottom: 12px; font-family: 'Share Tech Mono', monospace; }
+  .coord-item { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; }
+  .coord-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); margin-top: 5px; flex-shrink: 0; }
+  .coord-name { font-size: 0.78rem; color: var(--text); line-height: 1.3; }
+  .coord-role { font-size: 0.65rem; color: var(--muted); }
+
+  #events-technical, #events-nontechnical {
+    padding-top: 80px;
+    min-height: 100vh;
+  }
+
+  .events-hero {
+    text-align: center;
+    padding: 50px 20px 40px;
+    position: relative;
+  }
+
+  .events-hero-label {
+    display: inline-block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 5px;
+    margin-bottom: 12px;
+    padding: 4px 16px;
+    border-radius: 4px;
+  }
+  .tech-label { background: rgba(0,245,255,0.1); color: var(--primary); border: 1px solid rgba(0,245,255,0.3); }
+  .nontech-label { background: rgba(255,107,53,0.1); color: var(--secondary); border: 1px solid rgba(255,107,53,0.3); }
+
+  .events-hero-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    margin-bottom: 8px;
+  }
+  .tech-title { color: var(--primary); text-shadow: 0 0 40px rgba(0,245,255,0.4); }
+  .nontech-title { color: var(--secondary); text-shadow: 0 0 40px rgba(255,107,53,0.4); }
+
+  .events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  .event-card {
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    cursor: pointer;
+  }
+  .event-card:hover { transform: translateY(-10px); }
+
+  .event-card-header {
+    padding: 28px 24px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .event-card.tech-card .event-card-header { background: linear-gradient(135deg, rgba(0,245,255,0.12), rgba(124,58,237,0.15)); border-bottom: 1px solid rgba(0,245,255,0.2); }
+  .event-card.nontech-card .event-card-header { background: linear-gradient(135deg, rgba(255,107,53,0.12), rgba(255,215,0,0.1)); border-bottom: 1px solid rgba(255,107,53,0.2); }
+
+  .event-card-header::after {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    opacity: 0.12;
+  }
+  .tech-card .event-card-header::after { background: var(--primary); }
+  .nontech-card .event-card-header::after { background: var(--secondary); }
+
+  .event-card.tech-card { border: 1px solid rgba(0,245,255,0.2); background: rgba(0,10,20,0.7); }
+  .event-card.nontech-card { border: 1px solid rgba(255,107,53,0.2); background: rgba(20,5,0,0.7); }
+
+  .event-card:hover.tech-card { border-color: var(--primary); box-shadow: 0 24px 60px rgba(0,245,255,0.2), inset 0 1px 0 rgba(0,245,255,0.2); }
+  .event-card:hover.nontech-card { border-color: var(--secondary); box-shadow: 0 24px 60px rgba(255,107,53,0.2), inset 0 1px 0 rgba(255,107,53,0.2); }
+
+  .event-icon { font-size: 2.2rem; margin-bottom: 10px; display: block; }
+  .event-name {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .tech-card .event-name { color: var(--primary); }
+  .nontech-card .event-name { color: var(--secondary); }
+
+  .event-team {
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 2px;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  .event-card-body { padding: 20px 24px 24px; }
+
+  .rules-title {
+    font-size: 0.65rem;
+    letter-spacing: 4px;
+    color: var(--muted);
+    margin-bottom: 14px;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  .rule-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+  }
+  .tech-card .rule-item { background: rgba(0,245,255,0.04); border: 1px solid rgba(0,245,255,0.08); }
+  .nontech-card .rule-item { background: rgba(255,107,53,0.04); border: 1px solid rgba(255,107,53,0.08); }
+
+  .rule-num {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.6rem;
+    font-weight: 900;
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .tech-card .rule-num { background: rgba(0,245,255,0.15); color: var(--primary); }
+  .nontech-card .rule-num { background: rgba(255,107,53,0.15); color: var(--secondary); }
+
+  .rule-text { font-size: 0.8rem; color: var(--text); line-height: 1.4; letter-spacing: 0.3px; }
+
+  .event-card::before {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 10;
+    pointer-events: none;
+  }
+  .tech-card::before { background: linear-gradient(90deg, transparent, var(--primary), transparent); }
+  .nontech-card::before { background: linear-gradient(90deg, transparent, var(--secondary), transparent); }
+  .event-card:hover::before {
+    opacity: 1;
+    animation: scan 1.5s linear infinite;
+  }
+  @keyframes scan {
+    from { top: -2%; }
+    to { top: 102%; }
+  }
+
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 8px 20px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.25s;
+    margin: 20px 24px;
+  }
+  .back-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+  .reg-bar-inner{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:25px;
+    text-align:center;
+  }
+
+  .reg-center{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:15px;
+  }
+
+  .qr-image{
+    width:100px;
+    height:auto;
+    border-radius:12px;
+    box-shadow:0 0 20px rgba(0,245,255,0.4);
+    transition:0.3s ease;
+  }
+
+  .qr-image:hover{
+    transform:scale(1.08);
+  }
+
+  .grid-overlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image: 
+      linear-gradient(rgba(0,245,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,245,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .fade-in { animation: fadeInUp 0.7s ease forwards; }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.3s; }
+
+  @media (max-width: 640px) {
+    nav { padding: 12px 16px; }
+    .section-cards { grid-template-columns: 1fr; }
+    .coord-grid { grid-template-columns: 1fr; }
+    .info-strip { grid-template-columns: 1fr; }
+    .events-grid { grid-template-columns: 1fr; padding: 0 16px 60px; }
+    .countdown-grid { gap: 8px; }
+    .category-card { min-height: 220px; padding: 32px 24px; }
+  }
+
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(2,5,16,0.95);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow-y: auto;
+  }
+  .modal-overlay.active { display: flex; }
+  
+  .modal-container {
+    background: linear-gradient(135deg, rgba(0,15,30,0.95), rgba(10,5,20,0.95));
+    border: 1px solid var(--primary);
+    border-radius: 20px;
+    max-width: 1200px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 0 60px rgba(0,245,255,0.3), inset 0 1px 0 rgba(0,245,255,0.1);
+    animation: modalSlideIn 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  @keyframes modalSlideIn {
+    from { opacity: 0; transform: scale(0.9) translateY(40px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-header {
+    background: linear-gradient(135deg, rgba(0,245,255,0.15), rgba(124,58,237,0.1));
+    border-bottom: 1px solid rgba(0,245,255,0.2);
+    padding: 28px 32px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(20px);
+  }
+  .modal-close {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+  }
+  .modal-close:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: rotate(90deg);
+    box-shadow: 0 0 15px rgba(0,245,255,0.3);
+  }
+
+  .modal-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--primary);
+    margin-bottom: 6px;
+    text-shadow: 0 0 20px rgba(0,245,255,0.4);
+  }
+  .modal-subtitle {
+    font-size: 0.8rem;
+    color: var(--muted);
+    letter-spacing: 2px;
+  }
+
+  .modal-body {
+    padding: 32px;
+  }
+
+  .dept-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .dept-tab {
+    flex: 1;
+    min-width: 180px;
+    background: rgba(0,245,255,0.04);
+    border: 1px solid rgba(0,245,255,0.15);
+    border-radius: 10px;
+    padding: 14px 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    color: var(--muted);
+  }
+  .dept-tab:hover {
+    border-color: rgba(0,245,255,0.4);
+    background: rgba(0,245,255,0.08);
+  }
+  .dept-tab.active {
+    background: linear-gradient(135deg, rgba(0,245,255,0.15), rgba(124,58,237,0.1));
+    border-color: var(--primary);
+    color: var(--primary);
+    box-shadow: 0 0 20px rgba(0,245,255,0.2);
+  }
+
+  .dept-content { display: none; }
+  .dept-content.active {
+    display: block;
+    animation: fadeIn 0.4s ease;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .problem-card {
+    background: rgba(0,245,255,0.03);
+    border: 1px solid rgba(0,245,255,0.12);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 20px;
+    transition: all 0.3s;
+  }
+  .problem-card:hover {
+    border-color: rgba(0,245,255,0.3);
+    background: rgba(0,245,255,0.06);
+    box-shadow: 0 8px 30px rgba(0,245,255,0.1);
+  }
+
+  .problem-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--primary), #0099aa);
+    color: var(--dark);
+    border-radius: 8px;
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: 0.9rem;
+    margin-bottom: 14px;
+  }
+
+  .problem-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 16px;
+    line-height: 1.3;
+  }
+
+  .problem-section { margin-bottom: 16px; }
+  .problem-section-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .problem-section-text {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--text);
+    opacity: 0.9;
+  }
+
+  .problem-list { list-style: none; padding-left: 0; }
+  .problem-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--text);
+    opacity: 0.85;
+  }
+  .problem-list li::before {
+    content: '▸';
+    color: var(--primary);
+    font-size: 0.9rem;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  .event-action-btn {
+    background: linear-gradient(135deg, var(--primary), #0099aa);
+    color: var(--dark);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 12px;
+    display: inline-block;
+  }
+  .event-action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,245,255,0.4);
+  }
+
+  @media (max-width: 768px) {
+    .modal-container { max-height: 85vh; }
+    .modal-header { padding: 20px 24px; }
+    .modal-body { padding: 20px; }
+    .dept-tabs { flex-direction: column; }
+    .dept-tab { min-width: 100%; }
+  }
+
+  .glow-orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.12;
+    animation: drift 15s infinite alternate ease-in-out;
+  }
+  .glow-orb-1 { width: 500px; height: 500px; background: var(--primary); top: -100px; left: -100px; animation-delay: 0s; }
+  .glow-orb-2 { width: 400px; height: 400px; background: var(--accent); bottom: -100px; right: -100px; animation-delay: -5s; }
+  .glow-orb-3 { width: 300px; height: 300px; background: var(--secondary); top: 50%; right: 10%; animation-delay: -10s; }
+  @keyframes drift {
+    from { transform: translate(0, 0) scale(1); }
+    to { transform: translate(30px, 20px) scale(1.1); }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="particleCanvas"></canvas>
+<div class="grid-overlay"></div>
+<div class="glow-orb glow-orb-1"></div>
+<div class="glow-orb glow-orb-2"></div>
+<div class="glow-orb glow-orb-3"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">◈ KCET SYMPOSIUM</div>
+  <div class="nav-links">
+    <button class="nav-btn active-link" onclick="showPage('home')">HOME</button>
+    <button class="nav-btn" onclick="showPage('events-technical')">TECHNICAL</button>
+    <button class="nav-btn" onclick="showPage('events-nontechnical')">NON-TECH</button>
+  </div>
+</nav>
+
+<!-- HOME PAGE -->
+<div id="home" class="page active">
+  <div class="hero fade-in">
+    <div class="college-badge">◆ AN AUTONOMOUS INSTITUTION ◆ AFFILIATED TO ANNA UNIVERSITY, CHENNAI ◆</div>
+    <div class="hero-college">KAMARAJ COLLEGE OF ENGINEERING & TECHNOLOGY</div>
+    <div class="hero-subtitle-college">S.P.G. Chidambara Nadar C. Nagammal Campus · Virudhunagar</div>
+    <div class="presents-text">✦ PROUDLY PRESENTS ✦</div>
+    <div class="dept-badge">DEPT. OF MECHANICAL · MECHATRONICS · CIVIL ENGINEERING</div>
+    <div class="hero-title">TECHNOVA'26</div>
+    <div class="hero-tagline">NATIONAL LEVEL SYMPOSIUM 2026</div>
+    <div class="event-date-badge">
+      <span class="date-dot"></span>
+      17TH MARCH 2026
+      <span class="date-dot"></span>
+    </div>
+  </div>
+
+  <!-- COUNTDOWN -->
+  <div class="countdown-wrapper fade-in delay-1">
+    <div class="countdown-label">⟡ EVENT STARTS IN ⟡</div>
+    <div class="countdown-grid">
+      <div class="countdown-item">
+        <span class="countdown-num" id="cd-days">00</span>
+        <span class="countdown-unit">DAYS</span>
+      </div>
+      <div class="countdown-item">
+        <span class="countdown-num" id="cd-hours">00</span>
+        <span class="countdown-unit">HOURS</span>
+      </div>
+      <div class="countdown-item">
+        <span class="countdown-num" id="cd-mins">00</span>
+        <span class="countdown-unit">MINUTES</span>
+      </div>
+      <div class="countdown-item">
+        <span class="countdown-num" id="cd-secs">00</span>
+        <span class="countdown-unit">SECONDS</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATEGORY CARDS -->
+  <div class="section-cards fade-in delay-2">
+
+    <!-- TECHNICAL -->
+    <div class="category-card technical">
+      <span class="card-icon" style="color:var(--primary)">⚙️</span>
+      <div class="card-type-tag">CATEGORY 01</div>
+      <div class="card-title">TECHNICAL</div>
+      <div class="card-count">7 Events · Engineering Excellence</div>
+      <div class="card-events-list">
+        <span class="event-pill">Paper Presentation</span>
+        <span class="event-pill">Ideathon</span>
+        <span class="event-pill">Project Contest</span>
+        <span class="event-pill">CAD Modelling</span>
+        <span class="event-pill">Surve-X</span>
+        <span class="event-pill">Mr.machinist</span>
+        <span class="event-pill">Quiz</span>
+      </div>
+      <button class="card-cta" id="explore-tech-btn">EXPLORE EVENTS →</button>
+      <div class="card-bg-number">T</div>
+    </div>
+
+    <!-- NON TECHNICAL -->
+    <div class="category-card non-technical">
+      <span class="card-icon" style="color:var(--secondary)">🎭</span>
+      <div class="card-type-tag">CATEGORY 02</div>
+      <div class="card-title">NON TECHNICAL</div>
+      <div class="card-count">4 Events · Creative Showcase</div>
+      <div class="card-events-list">
+        <span class="event-pill">Connection</span>
+        <span class="event-pill">Treasure Hunt</span>
+        <span class="event-pill">Short Film</span>
+        <span class="event-pill">Free Fire</span>
+      </div>
+      <button class="card-cta" id="explore-nontech-btn">EXPLORE EVENTS →</button>
+      <div class="card-bg-number">N</div>
+    </div>
+
+  </div>
+
+  <!-- INFO STRIP -->
+  <div class="info-strip fade-in delay-3">
+    <div class="info-item">
+      <span class="info-icon">🏆</span>
+      <span class="info-text">ATTRACTIVE PRIZES AWAITING</span>
+    </div>
+    <div class="info-item">
+      <span class="info-icon">🍱</span>
+      <span class="info-text">LUNCH & REFRESHMENT PROVIDED</span>
+    </div>
+    <div class="info-item">
+      <span class="info-icon">💰</span>
+      <span class="info-text">REGISTRATION: ₹300 /-</span>
+    </div>
+  </div>
+
+  <!-- REG BAR -->
+  <div class="reg-bar fade-in delay-3">
+    <div class="reg-bar-inner">
+      <div class="reg-content">
+        <div style="font-size:0.7rem;letter-spacing:3px;color:var(--muted);margin-bottom:4px;font-family:'Share Tech Mono',monospace;">
+          REGISTER NOW
+        </div>
+        <div class="reg-info">
+          Registration Fee: <strong>₹300/-</strong> per team |
+          Contact coordinators for registration
+        </div>
+      </div>
+      <div class="reg-center">
+        <a href="https://q.me-qr.com/rowx7dpt" target="_blank">
+          <button class="reg-btn">REGISTER NOW</button>
+        </a>
+        <img src="qr.png" alt="QR Code" class="qr-image">
+      </div>
+    </div>
+  </div>
+
+  <!-- COORDINATORS -->
+  <div class="coordinators fade-in delay-3">
+    <div class="coord-title">⟡ EVENT COORDINATORS ⟡</div>
+    <div class="coord-grid">
+      <div class="coord-section">
+        <div class="coord-section-title">◈ STUDENT COORDINATORS</div>
+        <div class="coord-item">
+          <div class="coord-dot"></div>
+          <div>
+            <div class="coord-name">M. Karthickeyan</div>
+            <div class="coord-role">9500256821 / Mech</div>
+          </div>
+        </div>
+        <div class="coord-item">
+          <div class="coord-dot"></div>
+          <div>
+            <div class="coord-name">R. Madhav Eshwar</div>
+            <div class="coord-role">9489735146 / MTR</div>
+          </div>
+        </div>
+        <div class="coord-item">
+          <div class="coord-dot"></div>
+          <div>
+            <div class="coord-name">GS. Rishivarma</div>
+            <div class="coord-role">9080203398 / Civil</div>
+          </div>
+        </div>
+      </div>
+      <div class="coord-section">
+        <div class="coord-section-title">◈ STAFF COORDINATORS</div>
+        <div class="coord-item">
+          <div class="coord-dot"></div>
+          <div>
+            <div class="coord-name">Dr. B. Balavairavan</div>
+            <div class="coord-role">AP / Mech</div>
+          </div>
+        </div>
+        <div class="coord-item">
+          <div class="coord-dot"></div>
+          <div>
+            <div class="coord-name">Mr. A. Ganesan</div>
+            <div class="coord-role">AP / MTR</div>
+          </div>
+        </div>
+        <div class="coord-item">
+          <div class="coord-dot"></div>
+          <div>
+            <div class="coord-name">Mr. K. Hariharan</div>
+            <div class="coord-role">AP / Civil</div>
+          </div>
+        </div>
+      </div>
+      <div class="coord-section">
+        <div class="coord-section-title">◈ HEAD OF DEPARTMENTS</div>
+        <div class="coord-item">
+          <div class="coord-dot"></div>
+          <div class="coord-name">Dr. S. Thanga Kasi Rajan / Mech</div>
+        </div>
+        <div class="coord-item">
+          <div class="coord-dot"></div>
+          <div class="coord-name">Dr. K. Kannan AP / MTR</div>
+        </div>
+        <div class="coord-item">
+          <div class="coord-dot"></div>
+          <div class="coord-name">Dr. N. Jegan Durai / Civil</div>
+        </div>
+      </div>
+      <div class="coord-section">
+        <div class="coord-section-title">◈ PRINCIPAL</div>
+        <div class="coord-item">
+          <div class="coord-dot"></div>
+          <div class="coord-name">Dr. S. Senthil, M.E., Ph.D.,</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TECHNICAL EVENTS PAGE -->
+<div id="events-technical" class="page">
+  <button class="back-btn" onclick="showPage('home')">← BACK TO HOME</button>
+  <div class="events-hero">
+    <div class="events-hero-label tech-label">CATEGORY 01</div>
+    <div class="events-hero-title tech-title">TECHNICAL EVENTS</div>
+    <div style="color:var(--muted);font-size:0.85rem;letter-spacing:2px;margin-top:6px;">7 EVENTS · PUSH YOUR LIMITS</div>
+  </div>
+  <div class="events-grid" id="tech-events-grid"></div>
+</div>
+
+<!-- NON-TECH EVENTS PAGE -->
+<div id="events-nontechnical" class="page">
+  <button class="back-btn" onclick="showPage('home')">← BACK TO HOME</button>
+  <div class="events-hero">
+    <div class="events-hero-label nontech-label">CATEGORY 02</div>
+    <div class="events-hero-title nontech-title">NON-TECHNICAL EVENTS</div>
+    <div style="color:var(--muted);font-size:0.85rem;letter-spacing:2px;margin-top:6px;">4 EVENTS · UNLEASH YOUR CREATIVITY</div>
+  </div>
+  <div class="events-grid" id="nontech-events-grid"></div>
+</div>
+
+<!-- PROBLEM STATEMENTS MODAL -->
+<div class="modal-overlay" id="problemModal">
+  <div class="modal-container">
+    <div class="modal-header">
+      <div class="modal-title">IDEATHON PROBLEM STATEMENTS</div>
+      <div class="modal-subtitle">SELECT YOUR DEPARTMENT TO VIEW CHALLENGES</div>
+      <button class="modal-close" onclick="closeProblemStatements()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="dept-tabs">
+        <div class="dept-tab active" onclick="switchDept('mech', this)">⚙️ MECHANICAL & MECHATRONICS</div>
+        <div class="dept-tab" onclick="switchDept('civil', this)">🏗️ CIVIL</div>
+      </div>
+
+      <div class="dept-content active" id="dept-mech">
+        <div class="problem-card">
+          <div class="problem-number">1</div>
+          <div class="problem-title">Autonomous Smart Drain Cleaning and Blockage Detection System</div>
+          <div class="problem-section">
+            <div class="problem-section-title">◈ PROBLEM STATEMENT</div>
+            <div class="problem-section-text">Urban and semi-urban areas face frequent flooding due to clogged drainage systems caused by plastic waste, sludge accumulation, and lack of regular inspection. Manual cleaning exposes workers to hazardous gases and unsafe conditions.</div>
+          </div>
+          <div class="problem-section">
+            <div class="problem-section-title">◈ CHALLENGE</div>
+            <div class="problem-section-text">Design an autonomous or semi-autonomous robotic system capable of:</div>
+            <ul class="problem-list">
+              <li>Detecting drain blockages</li>
+              <li>Removing solid waste</li>
+              <li>Monitoring gas levels and water flow conditions</li>
+            </ul>
+          </div>
+          <div class="problem-section">
+            <div class="problem-section-title">◈ EXPECTED CONCEPTS</div>
+            <ul class="problem-list">
+              <li>Mechanical waste collection mechanism</li>
+              <li>Motorized mobility in narrow drains</li>
+              <li>IoT-based monitoring</li>
+              <li>Sensors (gas, ultrasonic, vision)</li>
+              <li>Remote operation or autonomous navigation</li>
+            </ul>
+          </div>
+        </div>
+        <div class="problem-card">
+          <div class="problem-number">2</div>
+          <div class="problem-title">Smart Public Toilet Hygiene Monitoring and Self-Cleaning System</div>
+          <div class="problem-section">
+            <div class="problem-section-title">◈ PROBLEM STATEMENT</div>
+            <div class="problem-section-text">Public toilets often become unusable due to poor maintenance, water wastage, and lack of real-time monitoring, creating major sanitation challenges.</div>
+          </div>
+          <div class="problem-section">
+            <div class="problem-section-title">◈ CHALLENGE</div>
+            <div class="problem-section-text">Develop a self-maintaining smart sanitation unit that:</div>
+            <ul class="problem-list">
+              <li>Monitors cleanliness automatically</li>
+              <li>Performs automated floor/seat cleaning</li>
+              <li>Optimizes water usage</li>
+              <li>Alerts authorities when maintenance is required</li>
+            </ul>
+          </div>
+          <div class="problem-section">
+            <div class="problem-section-title">◈ EXPECTED CONCEPTS</div>
+            <ul class="problem-list">
+              <li>Mechanical cleaning mechanisms</li>
+              <li>Automated spray and drying systems</li>
+              <li>Sensor-based contamination detection</li>
+              <li>Mechatronic control using microcontrollers</li>
+              <li>IoT dashboard</li>
+            </ul>
+          </div>
+        </div>
+        <div class="problem-card">
+          <div class="problem-number">3</div>
+          <div class="problem-title">Smart Low-Cost Patient Transfer and Lifting Assistance System</div>
+          <div class="problem-section">
+            <div class="problem-section-title">◈ PROBLEM STATEMENT</div>
+            <div class="problem-section-text">Hospitals and rural healthcare centers face difficulties in safely transferring patients between beds, wheelchairs, and stretchers. Manual lifting causes injuries to caregivers and discomfort to patients.</div>
+          </div>
+          <div class="problem-section">
+            <div class="problem-section-title">◈ CHALLENGE</div>
+            <div class="problem-section-text">Design an assistive patient transfer system that:</div>
+            <ul class="problem-list">
+              <li>Reduces manual lifting effort</li>
+              <li>Automatically adjusts height and orientation</li>
+              <li>Ensures safe patient handling</li>
+            </ul>
+          </div>
+          <div class="problem-section">
+            <div class="problem-section-title">◈ EXPECTED CONCEPTS</div>
+            <ul class="problem-list">
+              <li>Mechanical lifting mechanisms (scissor lift/hydraulic/electric actuator)</li>
+              <li>Load sensing and safety locking</li>
+              <li>Motorized control with embedded system</li>
+              <li>User-friendly interface</li>
+            </ul>
+          </div>
+        </div>
+        <div class="problem-card">
+          <div class="problem-number">4</div>
+          <div class="problem-title">Interactive Mechatronics-Based Learning Desk for STEM Education</div>
+          <div class="problem-section">
+            <div class="problem-section-title">◈ PROBLEM STATEMENT</div>
+            <div class="problem-section-text">Many schools lack hands-on learning tools, limiting practical understanding of engineering concepts.</div>
+          </div>
+          <div class="problem-section">
+            <div class="problem-section-title">◈ CHALLENGE</div>
+            <div class="problem-section-text">Develop a modular smart learning desk that:</div>
+            <ul class="problem-list">
+              <li>Demonstrates mechanical mechanisms interactively</li>
+              <li>Includes programmable sensors and actuators</li>
+              <li>Supports multiple STEM experiments</li>
+            </ul>
+          </div>
+          <div class="problem-section">
+            <div class="problem-section-title">◈ EXPECTED CONCEPTS</div>
+            <ul class="problem-list">
+              <li>Mechanical linkage demonstrations</li>
+              <li>Plug-and-play electronics modules</li>
+              <li>Embedded programming interface</li>
+              <li>AR/visual feedback integration</li>
+            </ul>
+          </div>
+        </div>
+        <div class="problem-card">
+          <div class="problem-number">5</div>
+          <div class="problem-title">Automated Examination Paper Handling and Sorting System</div>
+          <div class="problem-section">
+            <div class="problem-section-title">◈ PROBLEM STATEMENT</div>
+            <div class="problem-section-text">Manual handling of examination papers causes delays, errors, and security concerns.</div>
+          </div>
+          <div class="problem-section">
+            <div class="problem-section-title">◈ CHALLENGE</div>
+            <div class="problem-section-text">Develop a system that:</div>
+            <ul class="problem-list">
+              <li>Automatically sorts answer sheets</li>
+              <li>Counts and organizes papers securely</li>
+              <li>Tracks movement digitally</li>
+            </ul>
+          </div>
+          <div class="problem-section">
+            <div class="problem-section-title">◈ EXPECTED CONCEPTS</div>
+            <ul class="problem-list">
+              <li>Conveyor and mechanical sorting system</li>
+              <li>Optical recognition</li>
+              <li>Embedded control</li>
+              <li>Secure data logging</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="dept-content" id="dept-civil">
+        <div class="problem-card">
+          <div class="problem-number">1</div>
+          <div class="problem-title">Cost-Effective Prefabricated Housing for Tribal Communities</div>
+          <div class="problem-section">
+            <div class="problem-section-title">◈ CHALLENGE</div>
+            <div class="problem-section-text">How might we design cost-effective, prefabricated housing structures for tribal communities in interior forest areas, ensuring durability, environmental sustainability, and easy assembly in remote locations?</div>
+          </div>
+        </div>
+        <div class="problem-card">
+          <div class="problem-number">2</div>
+          <div class="problem-title">Automated Water Distribution System for Rural Areas</div>
+          <div class="problem-section">
+            <div class="problem-section-title">◈ CHALLENGE</div>
+            <div class="problem-section-text">How might we develop an automated water distribution system that ensures 55 LPCD per person, prevents wastage, and reduces electricity usage in rural households?</div>
+          </div>
+        </div>
+        <div class="problem-card">
+          <div class="problem-number">3</div>
+          <div class="problem-title">Home-Level Solid Waste and E-Waste Disposal Technology</div>
+          <div class="problem-section">
+            <div class="problem-section-title">◈ CHALLENGE</div>
+            <div class="problem-section-text">Design a home-level cost-effective safety technology to dispose of solid waste and e-waste without affecting the environment.</div>
+          </div>
+        </div>
+        <div class="problem-card">
+          <div class="problem-number">4</div>
+          <div class="problem-title">Extendable Safety Tool for Sanitation Workers</div>
+          <div class="problem-section">
+            <div class="problem-section-title">◈ CHALLENGE</div>
+            <div class="problem-section-text">How might we design an extendable, adjustable-hand fork for sanitation workers (Thooimai Paniyalargal) in rural areas, allowing them to safely and efficiently separate plastic waste from organic waste while minimizing direct contact and improving safety and comfort?</div>
+          </div>
+        </div>
+        <div class="problem-card">
+          <div class="problem-number">5</div>
+          <div class="problem-title">Farm Produce Storage Solutions for Small Farmers</div>
+          <div class="problem-section">
+            <div class="problem-section-title">◈ CHALLENGE</div>
+            <div class="problem-section-text">How might we develop sound, cost-effective storage and warehousing solutions for storing farm produce which can be easily accessed by poorer farmers and can be scaled up to mass production?</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── PAGE NAVIGATION ────────────────────────────────────────
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active-link'));
+  if (pageId === 'home') document.querySelectorAll('.nav-btn')[0].classList.add('active-link');
+  if (pageId === 'events-technical') document.querySelectorAll('.nav-btn')[1].classList.add('active-link');
+  if (pageId === 'events-nontechnical') document.querySelectorAll('.nav-btn')[2].classList.add('active-link');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─── EXPLORE BUTTONS ────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("explore-tech-btn").addEventListener("click", function (e) {
+    e.stopPropagation();
+    showPage("events-technical");
+    setTimeout(() => {
+      const grid = document.getElementById("tech-events-grid");
+      if (grid) grid.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 120);
+  });
+
+  document.getElementById("explore-nontech-btn").addEventListener("click", function (e) {
+    e.stopPropagation();
+    showPage("events-nontechnical");
+    setTimeout(() => {
+      const grid = document.getElementById("nontech-events-grid");
+      if (grid) grid.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 120);
+  });
+});
+
+// ─── PROBLEM STATEMENTS MODAL ───────────────────────────────
+function openProblemStatements() {
+  document.getElementById('problemModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeProblemStatements() {
+  document.getElementById('problemModal').classList.remove('active');
+  document.body.style.overflow = 'auto';
+}
+
+function switchDept(dept, el) {
+  document.querySelectorAll('.dept-tab').forEach(tab => tab.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.dept-content').forEach(content => content.classList.remove('active'));
+  document.getElementById('dept-' + dept).classList.add('active');
+}
+
+document.getElementById('problemModal').addEventListener('click', function(e) {
+  if (e.target === this) closeProblemStatements();
+});
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeProblemStatements();
+});
+
+// ─── EVENT DATA ─────────────────────────────────────────────
+const technicalEvents = [
+  {
+    icon: '📄',
+    name: 'PAPER PRESENTATION',
+    team: 'TEAM SIZE: 2 MEMBERS',
+    rules: [
+      'Abstract must be submitted by 12th March 2026',
+      'Final paper must be submitted by 15th March 2026',
+      'Team size: 2 members per team'
+    ]
+  },
+  {
+    icon: '📐',
+    name: 'CAD MODELLING',
+    team: 'TEAM SIZE: 2 MEMBERS',
+    rules: [
+      '2 members per team',
+      'Open to all three departments',
+      'Electronic gadgets are strictly restricted inside the lab'
+    ]
+  },
+  {
+    icon: '💡',
+    name: 'IDEATHON',
+    team: 'TEAM SIZE: MAX 2 MEMBERS',
+    hasButton: true,
+    buttonText: 'VIEW PROBLEM STATEMENTS',
+    buttonAction: 'openProblemStatements',
+    rules: [
+      'Maximum 2 members per team'
+    ]
+  },
+  {
+    icon: '🔩',
+    name: 'PROJECT CONTEST',
+    team: 'TEAM SIZE: MAX 2 MEMBERS',
+    rules: [
+      'For MECH & Mechatronics - Project prototype is mandatory',
+      'For CIVIL - POSTER/PPT presentation is mandatory',
+      'Maximum 2 members per team'
+    ]
+  },
+  {
+    icon: '🗺️',
+    name: 'SURVE-X',
+    team: 'TEAM SIZE: MAX 2 MEMBERS',
+    rules: [
+      'Survey the land (Area and dimensions)',
+      'Survey must be done under traditional method',
+      'Maximum 2 members per team'
+    ]
+  },
+  {
+    icon: '🦺',
+    name: 'MR. MACHINIST',
+    team: 'INDIVIDUAL EVENT',
+    rules: [
+      'Safety shoes are mandatory for participation',
+      'Individual event — 1 member per team only'
+    ]
+  },
+  {
+    icon: '🧠',
+    name: 'QUIZ',
+    team: 'TEAM SIZE: 2 MEMBERS',
+    rules: [
+      '2 members per team',
+      'Common for all three departments',
+      'No electronic devices allowed'
+    ]
+  }
+];
+
+const nonTechnicalEvents = [
+  {
+    icon: '🔗',
+    name: 'CONNECTION',
+    team: 'TEAM SIZE: 2 MEMBERS',
+    rules: [
+      '2 members per team',
+      'First come, first served basis',
+      'Electronic gadgets are strictly restricted'
+    ]
+  },
+  {
+    icon: '🗝️',
+    name: 'TREASURE HUNT',
+    team: 'TEAM EVENT',
+    rules: [
+      'Details will be announced on the event day',
+      'Stay alert and think creatively'
+    ]
+  },
+  {
+    icon: '🎬',
+    name: 'SHORT FILM MAKING',
+    team: 'TEAM EVENT',
+    rules: [
+      'Video must be 5–10 minutes in duration',
+      'Final video must be submitted before 15th March',
+      'Sensitive content is strictly prohibited',
+      'Film content should be presented correctly'
+    ]
+  },
+  {
+    icon: '🎮',
+    name: 'FREE FIRE',
+    team: 'TEAM EVENT',
+    rules: [
+      'Details will be announced on the event day',
+      'Bring your own device (mobile/tablet)',
+      'Fair play is mandatory — no hacks or cheats'
+    ]
+  }
+];
+
+// ─── BUILD EVENT CARDS ───────────────────────────────────────
+function buildEventCards(events, type, containerId) {
+  const container = document.getElementById(containerId);
+  const cardClass = type === 'tech' ? 'tech-card' : 'nontech-card';
+  events.forEach((ev, i) => {
+    const card = document.createElement('div');
+    card.className = `event-card ${cardClass} fade-in`;
+    card.style.animationDelay = `${i * 0.08}s`;
+    card.style.opacity = '0';
+    const rulesHTML = ev.rules.map((r, idx) => `
+      <div class="rule-item">
+        <div class="rule-num">${idx + 1}</div>
+        <div class="rule-text">${r}</div>
+      </div>
+    `).join('');
+    const actionButtonHTML = ev.hasButton ? `
+      <button class="event-action-btn" onclick="${ev.buttonAction}()">
+        ${ev.buttonText} →
+      </button>
+    ` : '';
+    card.innerHTML = `
+      <div class="event-card-header">
+        <span class="event-icon">${ev.icon}</span>
+        <div class="event-name">${ev.name}</div>
+        <div class="event-team">${ev.team}</div>
+      </div>
+      <div class="event-card-body">
+        <div class="rules-title">◈ RULES & INSTRUCTIONS</div>
+        ${rulesHTML}
+        ${actionButtonHTML}
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+buildEventCards(technicalEvents, 'tech', 'tech-events-grid');
+buildEventCards(nonTechnicalEvents, 'nontech', 'nontech-events-grid');
+
+// ─── COUNTDOWN TIMER ─────────────────────────────────────────
+function updateCountdown() {
+  const target = new Date('2026-03-17T09:00:00');
+  const now = new Date();
+  const diff = target - now;
+  if (diff <= 0) {
+    ['cd-days','cd-hours','cd-mins','cd-secs'].forEach(id => document.getElementById(id).textContent = '00');
+    return;
+  }
+  const days = Math.floor(diff / 86400000);
+  const hours = Math.floor((diff % 86400000) / 3600000);
+  const mins = Math.floor((diff % 3600000) / 60000);
+  const secs = Math.floor((diff % 60000) / 1000);
+  document.getElementById('cd-days').textContent = String(days).padStart(2, '0');
+  document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
+  document.getElementById('cd-mins').textContent = String(mins).padStart(2, '0');
+  document.getElementById('cd-secs').textContent = String(secs).padStart(2, '0');
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// ─── PARTICLE SYSTEM ─────────────────────────────────────────
+const canvas = document.getElementById('particleCanvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+let mouse = { x: -1000, y: -1000 };
+
+function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+resize();
+window.addEventListener('resize', resize);
+window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 2 + 0.5;
+    this.speedX = (Math.random() - 0.5) * 0.4;
+    this.speedY = (Math.random() - 0.5) * 0.4;
+    this.life = Math.random();
+    this.lifeSpeed = Math.random() * 0.003 + 0.001;
+    const r = Math.random();
+    if (r < 0.5) this.color = 'rgba(0,245,255,';
+    else if (r < 0.8) this.color = 'rgba(124,58,237,';
+    else this.color = 'rgba(255,107,53,';
+  }
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+    this.life += this.lifeSpeed;
+    if (this.life > 1) this.life = 0;
+    const dx = this.x - mouse.x;
+    const dy = this.y - mouse.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < 100) {
+      const force = (100 - dist) / 100;
+      this.x += dx * force * 0.03;
+      this.y += dy * force * 0.03;
+    }
+    if (this.x < 0) this.x = canvas.width;
+    if (this.x > canvas.width) this.x = 0;
+    if (this.y < 0) this.y = canvas.height;
+    if (this.y > canvas.height) this.y = 0;
+  }
+  draw() {
+    const alpha = Math.sin(this.life * Math.PI) * 0.6;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = this.color + alpha + ')';
+    ctx.fill();
+  }
+}
+
+class ShootingStar {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height * 0.5;
+    this.len = Math.random() * 120 + 60;
+    this.speed = Math.random() * 6 + 4;
+    this.angle = Math.PI / 4;
+    this.alpha = 1;
+    this.decay = Math.random() * 0.015 + 0.008;
+    this.active = false;
+    this.timer = Math.random() * 400;
+  }
+  update() {
+    if (!this.active) { this.timer--; if (this.timer <= 0) this.active = true; return; }
+    this.x += Math.cos(this.angle) * this.speed;
+    this.y += Math.sin(this.angle) * this.speed;
+    this.alpha -= this.decay;
+    if (this.alpha <= 0) this.reset();
+  }
+  draw() {
+    if (!this.active) return;
+    const tail = { x: this.x - Math.cos(this.angle) * this.len, y: this.y - Math.sin(this.angle) * this.len };
+    const grad = ctx.createLinearGradient(tail.x, tail.y, this.x, this.y);
+    grad.addColorStop(0, 'rgba(255,255,255,0)');
+    grad.addColorStop(1, `rgba(0,245,255,${this.alpha})`);
+    ctx.beginPath();
+    ctx.moveTo(tail.x, tail.y);
+    ctx.lineTo(this.x, this.y);
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  }
+}
+
+for (let i = 0; i < 140; i++) particles.push(new Particle());
+const stars = Array.from({ length: 5 }, () => new ShootingStar());
+
+function drawConnections() {
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 80) {
+        const alpha = (1 - dist / 80) * 0.12;
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(0,245,255,${alpha})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawConnections();
+  particles.forEach(p => { p.update(); p.draw(); });
+  stars.forEach(s => { s.update(); s.draw(); });
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+<!-- ─── FOOTER ─────────────────────────────────────────────── -->
+<!-- Paste this just before the closing </body> tag -->
+
+<style>
+  .site-footer {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    border-top: 1px solid rgba(0,245,255,0.15);
+    background: rgba(2,5,16,0.9);
+    backdrop-filter: blur(20px);
+    padding: 48px 40px 24px;
+    margin-top: 40px;
+  }
+
+  .footer-inner {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* Top row: logo + links */
+  .footer-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 32px;
+    margin-bottom: 36px;
+  }
+
+  .footer-brand {}
+  .footer-logo {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: var(--primary);
+    text-shadow: 0 0 20px rgba(0,245,255,0.4);
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+  }
+  .footer-tagline {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    letter-spacing: 3px;
+  }
+
+  .footer-links-group {
+    display: flex;
+    gap: 60px;
+    flex-wrap: wrap;
+  }
+
+  .footer-col-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 4px;
+    color: var(--primary);
+    margin-bottom: 14px;
+  }
+
+  .footer-col a,
+  .footer-col span {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: color 0.2s;
+    text-decoration: none;
+  }
+  .footer-col a:hover { color: var(--primary); }
+
+  /* Divider */
+  .footer-divider {
+    border: none;
+    border-top: 1px solid rgba(0,245,255,0.1);
+    margin-bottom: 20px;
+  }
+
+  /* Bottom row */
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .footer-copy {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 2px;
+    opacity: 0.7;
+  }
+
+  .footer-badges {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .footer-badge {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 2px;
+    padding: 4px 12px;
+    border-radius: 4px;
+    border: 1px solid rgba(0,245,255,0.2);
+    color: rgba(0,245,255,0.5);
+  }
+
+  .footer-glow-line {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    opacity: 0.3;
+    margin-bottom: 36px;
+  }
+
+  @media (max-width: 640px) {
+    .site-footer { padding: 36px 20px 20px; }
+    .footer-top { flex-direction: column; gap: 24px; }
+    .footer-links-group { gap: 32px; }
+    .footer-bottom { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+
+<footer class="site-footer">
+  <div class="footer-glow-line"></div>
+  <div class="footer-inner">
+
+    <div class="footer-top">
+      <!-- Brand -->
+      <div class="footer-brand">
+        <div class="footer-logo">TECHNOVA'26</div>
+        <div class="footer-tagline">NATIONAL LEVEL SYMPOSIUM · 17 MARCH 2026</div>
+      </div>
+
+      <!-- Link columns -->
+      <div class="footer-links-group">
+        <div class="footer-col">
+          <div class="footer-col-title">◈ NAVIGATE</div>
+          <a onclick="showPage('home')">Home</a>
+          <a onclick="showPage('events-technical')">Technical Events</a>
+          <a onclick="showPage('events-nontechnical')">Non-Technical Events</a>
+          <a onclick="openProblemStatements()">Ideathon Problems</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">◈ CONTACT</div>
+          <span>M. Karthickeyan — 9500256821</span>
+          <span>R. Madhav Eshwar — 9489735146</span>
+          <span>GS. Rishivarma — 9080203398</span>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">◈ VENUE</div>
+          <span>Kamaraj College of</span>
+          <span>Engineering & Technology</span>
+          <span>Virudhunagar, Tamil Nadu</span>
+        </div>
+      </div>
+    </div>
+
+    <hr class="footer-divider">
+
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 KCET — DEPT. OF MECH · MECHATRONICS · CIVIL</div>
+      <div class="footer-badges">
+        <span class="footer-badge">ANNA UNIVERSITY AFFILIATED</span>
+        <span class="footer-badge">AUTONOMOUS INSTITUTION</span>
+      </div>
+    </div>
+
+  </div>
+</footer>
+</body>
+</html>
